@@ -1,0 +1,386 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C7A565E21C18B4800377E82 /* QuestAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C7A565C21C18B4800377E82 /* QuestAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C7A566C21C18B6600377E82 /* QuestAuthTokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566421C18B6600377E82 /* QuestAuthTokenManager.swift */; };
+		1C7A566D21C18B6600377E82 /* MockResponses in Resources */ = {isa = PBXBuildFile; fileRef = 1C7A566521C18B6600377E82 /* MockResponses */; };
+		1C7A566E21C18B6600377E82 /* QuestAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566621C18B6600377E82 /* QuestAuth.swift */; };
+		1C7A566F21C18B6600377E82 /* QuestAPIStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566721C18B6600377E82 /* QuestAPIStructs.swift */; };
+		1C7A567021C18B6600377E82 /* iOSQuestAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566821C18B6600377E82 /* iOSQuestAuth.swift */; };
+		1C7A567121C18B6600377E82 /* QuestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566921C18B6600377E82 /* QuestAPI.swift */; };
+		1C7A567221C18B6600377E82 /* QuestDataStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566A21C18B6600377E82 /* QuestDataStructs.swift */; };
+		1C7A567321C18B6600377E82 /* QuestDataEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566B21C18B6600377E82 /* QuestDataEnums.swift */; };
+		1CCD091E22F9F514009DD179 /* QuestAPI+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCD091D22F9F514009DD179 /* QuestAPI+Endpoints.swift */; };
+		1CD2578121C1A3BC0014DD22 /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 1CD2578021C1A3BC0014DD22 /* LICENSE.md */; };
+		1CD2578321C1A8150014DD22 /* URLRequestCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD2578221C1A8150014DD22 /* URLRequestCodable.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C7A565921C18B4800377E82 /* QuestAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuestAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C7A565C21C18B4800377E82 /* QuestAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestAPI.h; sourceTree = "<group>"; };
+		1C7A565D21C18B4800377E82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C7A566421C18B6600377E82 /* QuestAuthTokenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAuthTokenManager.swift; sourceTree = "<group>"; };
+		1C7A566521C18B6600377E82 /* MockResponses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MockResponses; sourceTree = "<group>"; };
+		1C7A566621C18B6600377E82 /* QuestAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAuth.swift; sourceTree = "<group>"; };
+		1C7A566721C18B6600377E82 /* QuestAPIStructs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAPIStructs.swift; sourceTree = "<group>"; };
+		1C7A566821C18B6600377E82 /* iOSQuestAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSQuestAuth.swift; sourceTree = "<group>"; };
+		1C7A566921C18B6600377E82 /* QuestAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAPI.swift; sourceTree = "<group>"; };
+		1C7A566A21C18B6600377E82 /* QuestDataStructs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestDataStructs.swift; sourceTree = "<group>"; };
+		1C7A566B21C18B6600377E82 /* QuestDataEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestDataEnums.swift; sourceTree = "<group>"; };
+		1CCD091D22F9F514009DD179 /* QuestAPI+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "QuestAPI+Endpoints.swift"; sourceTree = "<group>"; };
+		1CCDA5C721C1C75A00288E23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1CD2578021C1A3BC0014DD22 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		1CD2578221C1A8150014DD22 /* URLRequestCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestCodable.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1C7A565621C18B4800377E82 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C7A564F21C18B4800377E82 = {
+			isa = PBXGroup;
+			children = (
+				1C7A565B21C18B4800377E82 /* QuestAPI */,
+				1C7A565A21C18B4800377E82 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1C7A565A21C18B4800377E82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C7A565921C18B4800377E82 /* QuestAPI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C7A565B21C18B4800377E82 /* QuestAPI */ = {
+			isa = PBXGroup;
+			children = (
+				1CD2578221C1A8150014DD22 /* URLRequestCodable.swift */,
+				1C7A566821C18B6600377E82 /* iOSQuestAuth.swift */,
+				1C7A566521C18B6600377E82 /* MockResponses */,
+				1C7A566921C18B6600377E82 /* QuestAPI.swift */,
+				1C7A566721C18B6600377E82 /* QuestAPIStructs.swift */,
+				1CCD091D22F9F514009DD179 /* QuestAPI+Endpoints.swift */,
+				1C7A566621C18B6600377E82 /* QuestAuth.swift */,
+				1C7A566421C18B6600377E82 /* QuestAuthTokenManager.swift */,
+				1C7A566B21C18B6600377E82 /* QuestDataEnums.swift */,
+				1C7A566A21C18B6600377E82 /* QuestDataStructs.swift */,
+				1C7A565C21C18B4800377E82 /* QuestAPI.h */,
+				1C7A565D21C18B4800377E82 /* Info.plist */,
+				1CD2578021C1A3BC0014DD22 /* LICENSE.md */,
+				1CCDA5C721C1C75A00288E23 /* README.md */,
+			);
+			path = QuestAPI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1C7A565421C18B4800377E82 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C7A565E21C18B4800377E82 /* QuestAPI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1C7A565821C18B4800377E82 /* QuestAPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C7A566121C18B4800377E82 /* Build configuration list for PBXNativeTarget "QuestAPI" */;
+			buildPhases = (
+				1C7A565421C18B4800377E82 /* Headers */,
+				1C7A565521C18B4800377E82 /* Sources */,
+				1C7A565621C18B4800377E82 /* Frameworks */,
+				1C7A565721C18B4800377E82 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuestAPI;
+			productName = QuestAPI;
+			productReference = 1C7A565921C18B4800377E82 /* QuestAPI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1C7A565021C18B4800377E82 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Eli Slade";
+				TargetAttributes = {
+					1C7A565821C18B4800377E82 = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
+					};
+				};
+			};
+			buildConfigurationList = 1C7A565321C18B4800377E82 /* Build configuration list for PBXProject "QuestAPI" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1C7A564F21C18B4800377E82;
+			productRefGroup = 1C7A565A21C18B4800377E82 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1C7A565821C18B4800377E82 /* QuestAPI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1C7A565721C18B4800377E82 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CD2578121C1A3BC0014DD22 /* LICENSE.md in Resources */,
+				1C7A566D21C18B6600377E82 /* MockResponses in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1C7A565521C18B4800377E82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CD2578321C1A8150014DD22 /* URLRequestCodable.swift in Sources */,
+				1C7A567021C18B6600377E82 /* iOSQuestAuth.swift in Sources */,
+				1C7A566F21C18B6600377E82 /* QuestAPIStructs.swift in Sources */,
+				1C7A567321C18B6600377E82 /* QuestDataEnums.swift in Sources */,
+				1CCD091E22F9F514009DD179 /* QuestAPI+Endpoints.swift in Sources */,
+				1C7A566E21C18B6600377E82 /* QuestAuth.swift in Sources */,
+				1C7A566C21C18B6600377E82 /* QuestAuthTokenManager.swift in Sources */,
+				1C7A567121C18B6600377E82 /* QuestAPI.swift in Sources */,
+				1C7A567221C18B6600377E82 /* QuestDataStructs.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1C7A565F21C18B4800377E82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1C7A566021C18B4800377E82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		1C7A566221C18B4800377E82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = N2V9KYH4KN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = QuestAPI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.elislade.QuestAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C7A566321C18B4800377E82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = N2V9KYH4KN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = QuestAPI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.elislade.QuestAPI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1C7A565321C18B4800377E82 /* Build configuration list for PBXProject "QuestAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C7A565F21C18B4800377E82 /* Debug */,
+				1C7A566021C18B4800377E82 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1C7A566121C18B4800377E82 /* Build configuration list for PBXNativeTarget "QuestAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C7A566221C18B4800377E82 /* Debug */,
+				1C7A566321C18B4800377E82 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1C7A565021C18B4800377E82 /* Project object */;
+}

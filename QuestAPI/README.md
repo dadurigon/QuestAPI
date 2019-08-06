@@ -1,5 +1,16 @@
 # QuestAPI
 
+## Getting Started
+
+Install from [cocoapods](https://cocoapods.org).
+
+```
+pod install QuestAPI
+```
+
+Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAuthClientId in your Info.plist from the values that Questrade provides in it's developer portal.
+
+
 A native Swift API for Questrade. The QuestAPI is made up of three main pieces:
 1. KeychainStore
 2. QuestAuth
@@ -18,6 +29,36 @@ The `QuestAuth` class requires a `KeychainStore` instance for init. `QuestAuth` 
 let auth = try iOSQuestAuth(keychainStore: keychain)
 ```
 
+### AppDelegate
+
+Pass the AppDelegate userActivity method onto the mirrored iOS authorization handler. This closes the loop when requesting authorization.
+
+```
+func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    if let auth = QuestAPI.shared.authorizer as? iOSQuestAuth {
+        auth.application(application, continue: userActivity, restorationHandler: restorationHandler)
+    }
+    return true
+}
+```
+
+### Asking for Auth Permission
+
+
+```
+func setupAPIAuthorization() {
+    if auth.token == nil {
+        auth.authorize { error in
+            if let e = error {
+                // Handle errors with authorization
+            } else {
+                // API was successfully authorized you can now interact with the API.
+            }
+        }
+    }
+}
+```
+
 ## QuestAPI
 `QuestAPI` is what you interact with. It requires an authorizer(`QuestAuth`) so that all requests can be authorized. You make a call by 
 
@@ -33,35 +74,69 @@ api.accounts { res in
 }
 ```
 
-## Getting Started
+## QuestAPIDelegate
 
-Right now there is only [cocoapods](https://cocoapods.org) support.
+### DidSignOut
+
+DidSignOut will be called whenever the API can't auto reauthorize a request.
+Here is some example code of how you might handle it:
 
 ```
+extension LoginViewController: QuestAuthDelegate {
+    func didSignOut(_ questAuth: QuestAuth) {
+        let alertTitle = NSLocalizedString("Questrade Did Revoke Access", comment: "")
+        let alertMsg = NSLocalizedString("Please sign-in again!", comment: "")
+        let alertAction = NSLocalizedString("Okay", comment: "")
 
-pod install QuestAPI
+        let alertCtrl = UIAlertController(title: alertTitle, message: alertMsg, preferredStyle: .alert)
+        alertCtrl.addAction(UIAlertAction(title: alertAction, style: .cancel, handler: { act in
+        self.view.tintAdjustmentMode = .normal
+        }))
+
+        DispatchQueue.main.async {
+            self.view.tintAdjustmentMode = .dimmed
+            self.present(alertCtrl, animated: true, completion: nil)
+        }
+    }
+}
 ```
 
-Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAuthClientId in your Info.plist from the values that Questrade provides in it's developer portal.
+### DidRecieveError
+
+DidRecieveError will be called whenever the API encounters an error.
+Here is some example code of how you might handle it:
+
+```
+extension LoginViewController: QuestAPIDelegate {
+    func didRecieveError(_ api:QuestAPI, error: Error) {
+        let titleStr = NSLocalizedString("Error!", comment: "")
+        let okayStr = NSLocalizedString("Okay", comment: "")
+        let act = UIAlertController(title: titleStr, message: error.localizedDescription, preferredStyle: .alert)
+        let okay = UIAlertAction(title: okayStr, style: .default, handler: nil)
+        act.addAction(okay)
+
+        DispatchQueue.main.async {
+            self.present(act, animated: true, completion: nil)
+        }
+    }
+}
+```
 
 Here is a full example of setting up QuestAPI
 
 ```
 // First setup the keychain store for your app
-// The keychain store is responsible for encrypting and decrypting your API access tokens behind the scenes so you don't have to worry about doing it.
 let keychain = AuthKeychainStore(service: ..., account: ..., data: [:])
 
 // since the init could throw errors you will have to wrap it in a do catch
-
 do {
-    // hand the keychain store to the iOSQuestAuth class
-    // The QuestAuth class is responsible for authenticating all api requests to the api.
+    // Init iOSQuestAuth class with the keychain store
     let auth = try iOSQuestAuth(keychainStore: keychain)
-    auth.refreshToken()
     
-    // Finally hand the authorizer to the API.
-    // The API is where you make all requests
+    // Init QuestAPI with the authorizer
     let api = QuestAPI(authorizor: auth)
+    
+    // Optionally set a singleton to access the API
     QuestAPI.shared = api
 } catch let err {
    // handle error
@@ -75,24 +150,9 @@ For testing purposes you can set `shouldUseMockResponse` on `QuestAPI` and you w
 *NOTE: there is only mock data for some requests right now (found in the MockResponses folder).
 
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
 ## Authors
 
 * **Eli Slade** - *Initial work* - [Eli Slade](https://github.com/eli_slade)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 

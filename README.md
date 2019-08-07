@@ -31,8 +31,7 @@ let auth = try iOSQuestAuth(keychainStore: keychain)
 ### QuestAuthDelegate
 
 #### DidSignOut
-
-DidSignOut will be called whenever the authorizer can't auto reauthorize a request.
+`didSignOut` will be called whenever the authorizer can't auto reauthorize a request.
 Here is some example code of how you might handle it:
 
 ```
@@ -55,7 +54,7 @@ extension LoginViewController: QuestAuthDelegate {
 }
 ```
 
-### Inital Authorization
+### Initial Authorization
 
 #### 1. Requesting Authorization
 
@@ -75,7 +74,7 @@ func setupAPIAuthorization() {
 
 #### 2. AppDelegate Complete Requesting Authorization
 
-Pass the AppDelegate userActivity method onto the mirrored iOS authorization handler. This closes the loop when requesting authorization.
+Pass the AppDelegate userActivity method onto the mirrored iOS authorization userActivity handler. This closes the loop when requesting authorization.
 
 ```
 func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
@@ -87,7 +86,7 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
 ```
 
 ## QuestAPI
-`QuestAPI` is what you interact with. It requires an authorizer(`QuestAuth`) so that all requests can be authorized.
+The `QuestAPI`  class requires an authorizer(`QuestAuth`)  on init so that all requests can be authorized.
 
 ```
 let api = QuestAPI(authorizor: auth)
@@ -105,7 +104,7 @@ api.accounts { res in
 
 #### DidRecieveError
 
-DidRecieveError will be called whenever the API encounters an error.
+`didRecieveError` will be called whenever the API encounters an error.
 Here is some example code of how you might handle it:
 
 ```

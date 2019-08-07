@@ -11,7 +11,7 @@ pod install QuestAPI
 Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAuthClientId in your Info.plist from the values that Questrade provides in it's developer portal.
 
 
-A native Swift API for Questrade. The QuestAPI is made up of three main pieces:
+The QuestAPI is made up of three main pieces:
 1. KeychainStore
 2. QuestAuth
 3. QuestAPI
@@ -60,7 +60,7 @@ func setupAPIAuthorization() {
 ```
 
 ## QuestAPI
-`QuestAPI` is what you interact with. It requires an authorizer(`QuestAuth`) so that all requests can be authorized. You make a call by 
+`QuestAPI` is what you interact with. It requires an authorizer(`QuestAuth`) so that all requests can be authorized.
 
 ```
 let api = QuestAPI(authorizor: auth)
@@ -152,7 +152,7 @@ For testing purposes you can set `shouldUseMockResponse` on `QuestAPI` and you w
 
 ## Authors
 
-* **Eli Slade** - *Initial work* - [Eli Slade](https://github.com/eli_slade)
+* **Eli Slade** - *Initial work* - [Eli Slade](https://gitlab.com/eli_slade)
 
 ## License
 

@@ -2,10 +2,10 @@
 
 ## Getting Started
 
-Install from [cocoapods](https://cocoapods.org).
+Add to your podfile to install from repo
 
 ```
-pod install QuestAPI
+pod 'QuestAPI', :git => 'https://gitlab.com/eli_slade/questapi.git'
 ```
 
 Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAuthClientId in your Info.plist from the values that Questrade provides in it's developer portal.
@@ -28,22 +28,36 @@ The `QuestAuth` class requires a `KeychainStore` instance for init. `QuestAuth` 
 ```
 let auth = try iOSQuestAuth(keychainStore: keychain)
 ```
+### QuestAuthDelegate
 
-### AppDelegate
+#### DidSignOut
 
-Pass the AppDelegate userActivity method onto the mirrored iOS authorization handler. This closes the loop when requesting authorization.
+DidSignOut will be called whenever the authorizer can't auto reauthorize a request.
+Here is some example code of how you might handle it:
 
 ```
-func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-    if let auth = QuestAPI.shared.authorizer as? iOSQuestAuth {
-        auth.application(application, continue: userActivity, restorationHandler: restorationHandler)
+extension LoginViewController: QuestAuthDelegate {
+    func didSignOut(_ questAuth: QuestAuth) {
+        let alertTitle = NSLocalizedString("Questrade Did Revoke Access", comment: "")
+        let alertMsg = NSLocalizedString("Please sign-in again!", comment: "")
+        let alertAction = NSLocalizedString("Okay", comment: "")
+
+        let alertCtrl = UIAlertController(title: alertTitle, message: alertMsg, preferredStyle: .alert)
+        alertCtrl.addAction(UIAlertAction(title: alertAction, style: .cancel, handler: { act in
+            self.view.tintAdjustmentMode = .normal
+        }))
+
+        DispatchQueue.main.async {
+            self.view.tintAdjustmentMode = .dimmed
+            self.present(alertCtrl, animated: true, completion: nil)
+        }
     }
-    return true
 }
 ```
 
-### Asking for Auth Permission
+### Inital Authorization
 
+#### 1. Requesting Authorization
 
 ```
 func setupAPIAuthorization() {
@@ -56,6 +70,19 @@ func setupAPIAuthorization() {
             }
         }
     }
+}
+```
+
+#### 2. AppDelegate Complete Requesting Authorization
+
+Pass the AppDelegate userActivity method onto the mirrored iOS authorization handler. This closes the loop when requesting authorization.
+
+```
+func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    if let auth = QuestAPI.shared.authorizer as? iOSQuestAuth {
+        auth.application(application, continue: userActivity, restorationHandler: restorationHandler)
+    }
+    return true
 }
 ```
 
@@ -74,34 +101,9 @@ api.accounts { res in
 }
 ```
 
-## QuestAPIDelegate
+### QuestAPIDelegate
 
-### DidSignOut
-
-DidSignOut will be called whenever the API can't auto reauthorize a request.
-Here is some example code of how you might handle it:
-
-```
-extension LoginViewController: QuestAuthDelegate {
-    func didSignOut(_ questAuth: QuestAuth) {
-        let alertTitle = NSLocalizedString("Questrade Did Revoke Access", comment: "")
-        let alertMsg = NSLocalizedString("Please sign-in again!", comment: "")
-        let alertAction = NSLocalizedString("Okay", comment: "")
-
-        let alertCtrl = UIAlertController(title: alertTitle, message: alertMsg, preferredStyle: .alert)
-        alertCtrl.addAction(UIAlertAction(title: alertAction, style: .cancel, handler: { act in
-        self.view.tintAdjustmentMode = .normal
-        }))
-
-        DispatchQueue.main.async {
-            self.view.tintAdjustmentMode = .dimmed
-            self.present(alertCtrl, animated: true, completion: nil)
-        }
-    }
-}
-```
-
-### DidRecieveError
+#### DidRecieveError
 
 DidRecieveError will be called whenever the API encounters an error.
 Here is some example code of how you might handle it:
@@ -122,6 +124,7 @@ extension LoginViewController: QuestAPIDelegate {
 }
 ```
 
+## Full Init Code
 Here is a full example of setting up QuestAPI
 
 ```

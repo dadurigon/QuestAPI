@@ -1,9 +1,3 @@
-//
-//  QuestAPI+Endpoints.swift
-//  FirebaseCore
-//
-//  Created by Eli Slade on 2019-08-05.
-//
 
 import Foundation
 

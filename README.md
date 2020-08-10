@@ -5,7 +5,7 @@
 Add to your podfile to install from repo
 
 ```
-pod 'QuestAPI', :git => 'https://gitlab.com/eli_slade/questapi.git'
+pod 'QuestAPI', :git => 'https://github.com/elislade/QuestAPI.git'
 ```
 
 Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAuthClientId in your Info.plist from the values that Questrade provides in it's developer portal.
@@ -154,7 +154,7 @@ For testing purposes you can set `shouldUseMockResponse` on `QuestAPI` and you w
 
 ## Authors
 
-* **Eli Slade** - *Initial work* - [Eli Slade](https://gitlab.com/eli_slade)
+* **Eli Slade** - *Initial work* - [Eli Slade](https://github.com/elislade)
 
 ## License
 

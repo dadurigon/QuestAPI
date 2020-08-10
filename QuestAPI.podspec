@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       =  { :path => 'https://gitlab.com/eli_slade/questapi.git' }
+  s.source       =  { :path => 'https://github.com/elislade/QuestAPI.git' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

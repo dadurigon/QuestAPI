@@ -1,83 +1,46 @@
 
 import Foundation
-import Locksmith
 
-public struct AuthKeychainStore: ReadableSecureStorable, CreateableSecureStorable, GenericPasswordSecureStorable, DeleteableSecureStorable {
-    // Required by GenericPasswordSecureStorable
-    public let service:String
-    public let account:String
-    
-    // Required by CreateableSecureStorable
-    public var data: [String: Any] = [:]
-    
-    public init(service:String, account:String, data: [String: Any]) {
-        self.service = service
-        self.account = account
-        self.data = data
-    }
+public protocol TokenStorable {
+    func getToken() -> Data
+    func setToken(_ token: Data)
 }
 
-public class TokenManager<TokenType:Codable> {
+public class TokenManager<Token: Codable> {
     
-    private let dataKey = "token"
+    private var _token: Token?
     
-    private var backingToken:TokenType?
-    public var token:TokenType? {
+    public var token: Token? {
         set(newValue) {
-            backingToken = newValue
-            
-            if token != nil && newValue != nil {
-                try! update()
-            }
-            
-            if newValue != nil && token == nil {
-                try! save(encoder: encoder)
-            }
+            _token = newValue
+            saveToken()
         }
         
         get {
-            if let tokens = backingToken {
+            if let tokens = _token {
                 return tokens
             } else {
-                backingToken = try! load(decoder: decoder)
-                return backingToken
+                _token = loadToken()
+                return _token
             }
         }
     }
     
-    public var keychain:AuthKeychainStore
-    public var encoder = JSONEncoder()
-    public var decoder = JSONDecoder()
+    var storage: TokenStorable
+    var encoder = JSONEncoder()
+    var decoder = JSONDecoder()
     
-    init(keychain:AuthKeychainStore) {
-        self.keychain = keychain
+    init(storage: TokenStorable) {
+        self.storage = storage
     }
     
-    func save(encoder:JSONEncoder) throws {
-        let data = try encoder.encode(token)
-        keychain.data[dataKey] = data
-        try keychain.createInSecureStore()
+    private func saveToken() {
+        let data = try? encoder.encode(token)
+        storage.setToken(data ?? Data())
     }
     
-    func update() throws {
-        let data = try encoder.encode(token)
-        keychain.data[dataKey] = data
-        try keychain.updateInSecureStore()
+    private func loadToken() -> Token? {
+        return try? decoder.decode(Token.self, from: storage.getToken())
     }
     
-    func load(decoder:JSONDecoder) throws -> TokenType? {
-        if let result = keychain.readFromSecureStore() {
-            if let tokenData = result.data?[dataKey] as? Data {
-                return try decoder.decode(TokenType.self, from: tokenData)
-            } else {
-                return nil
-            }
-        }
-        return nil
-    }
-    
-    func delete() throws {
-        try keychain.deleteFromSecureStore()
-        token = nil
-    }
 }

@@ -4,15 +4,15 @@ import Foundation
 public typealias Completion<T> = (T) -> Void
 
 public struct AuthResponse: Codable {
-    let access_token:String
-    let refresh_token:String
-    let api_server:URL
-    let expires_in:Int
-    let token_type:String
+    let access_token: String
+    let refresh_token: String
+    let api_server: URL
+    let token_type: String
+    let expiryDate: Date
 }
 
 public protocol QuestAuthDelegate {
-    func didSignOut(_ questAuth:QuestAuth)
+    func didSignOut(_ questAuth: QuestAuth)
 }
 
 public enum QuestAuthError: Error {
@@ -20,29 +20,44 @@ public enum QuestAuthError: Error {
 }
 
 public class QuestAuth: NSObject, URLRequestCodable {
-    public var apiDelegate: URLRequestCodableDelegate?
+    
+    let baseURL = "https://login.questrade.com/oauth2/"
+    
+    let clientId: String
+    let redirectURL: String
+    
+    private let _tokenManager: TokenManager<AuthResponse>
+    
+    var token: AuthResponse? {
+        get { _tokenManager.token }
+        set { _tokenManager.token = newValue }
+    }
+    
+    var authURLString: String {
+        let redirectURI = "redirect_uri=\(redirectURL)"
+        let responseType = "response_type=token"
+        let clientID = "client_id=\(clientId)"
+        return baseURL + "authorize?\(clientID)&\(responseType)&\(redirectURI)"
+    }
+    
+    public var requestDelegate: URLRequestCodableDelegate?
     
     public var encoder = JSONEncoder()
     public var decoder = JSONDecoder()
     public var session = URLSession.shared
-    public var delegate:QuestAuthDelegate?
-    
-    let baseURL = "https://login.questrade.com/oauth2/"
-    
-    private let clientId:String
-    private let redirectURL:String
-    
-    private let tokenManager:TokenManager<AuthResponse>
-    public var token:AuthResponse? {
-        get {
-            return tokenManager.token
+    public var delegate: QuestAuthDelegate?
+    public var isAuthorized: Bool {
+        if let t = token {
+            return t.expiryDate > Date()
         }
-        set {
-            tokenManager.token = newValue
-        }
+        
+        return false
     }
     
-    public init(keychainStore:AuthKeychainStore) throws {
+    
+    
+    public init(tokenStore: TokenStorable, clientID: String, redirectURL: String) {
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -52,41 +67,18 @@ public class QuestAuth: NSObject, URLRequestCodable {
         decoder.dateDecodingStrategy = .formatted(formatter)
         encoder.dateEncodingStrategy = .formatted(formatter)
         
-        var _clientID:String?
-        var _redirect:String?
-        
-        if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-            if let infoDictionary = NSDictionary(contentsOfFile: path) {
-                _clientID = infoDictionary["QuestAuthClientId"] as? String
-                _redirect = infoDictionary["QuestAuthRedirect"] as? String
-            }
-        }
-        
-        if let client = _clientID {
-            clientId = client
-        } else {
-            throw QuestAuthError.missingClientID
-        }
-        
-        if let redirect = _redirect {
-            redirectURL = redirect
-        } else {
-            throw QuestAuthError.missingRedirectURL
-        }
-        
-        tokenManager = TokenManager<AuthResponse>(keychain: keychainStore)
+        self.clientId = clientID
+        self.redirectURL = redirectURL
+        self._tokenManager = TokenManager<AuthResponse>(storage: tokenStore)
     }
     
     private func signOut() {
-        do {
-            try self.tokenManager.delete()
-            self.delegate?.didSignOut(self)
-        } catch _ {
-        }
+        token = nil
+        delegate?.didSignOut(self)
     }
     
-    public func revokeAccess(completion:(() -> Void)? = nil) {
-        let _completion:APIRes<Data> = { _ in
+    public func revokeAccess(completion: (() -> Void)? = nil) {
+        let _completion: APIRes<Data> = { _ in
             self.signOut()
             completion?()
         }
@@ -97,22 +89,25 @@ public class QuestAuth: NSObject, URLRequestCodable {
         }
     }
     
-    func authorizedTemplateRequest(baseURL:String? = nil) -> URLRequest? {
+    func authorizedTemplateRequest(baseURL: String? = nil) -> URLRequest? {
         guard let token = token else { return nil }
-        let u:URL = baseURL != nil ? URL(string: baseURL!)! : token.api_server
+        let u: URL = baseURL != nil ? URL(string: baseURL!)! : token.api_server
         var r = URLRequest(url: u)
         r.addValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
         return r
     }
     
-    func autoAuth<T: Decodable>(_ request:URLRequest, completion:@escaping APIRes<T>, attempts:Int = 3) {
+    
+    // FIXME: Needs logic improvement
+    
+    func autoAuth<T>(_ request: URLRequest, attempts: Int = 3, completion: @escaping APIRes<T>) {
         var executed = false
         
         if attempts == 0 {
             completion(.failure(QuestAuthError.authAttemptsRanOut))
         }
     
-        let _completion:APIRes<T> = { res in
+        let _completion: APIRes<T> = { res in
             if executed { return }
             
             if case .failure(let error) = res {
@@ -123,7 +118,7 @@ public class QuestAuth: NSObject, URLRequestCodable {
                             if var newRequest = self.authorizedTemplateRequest(baseURL: request.url?.absoluteString) {
                                 newRequest.httpBody = request.httpBody
                                 newRequest.httpMethod = request.httpMethod
-                                self.autoAuth(newRequest, completion: completion, attempts: attempts - 1)
+                                self.autoAuth(newRequest, attempts: attempts - 1, completion: completion)
                             }
                         }
                     }
@@ -139,7 +134,7 @@ public class QuestAuth: NSObject, URLRequestCodable {
         make(request, completion: _completion)
     }
     
-    public func refreshToken(completion:Completion<Error?>? = nil) {
+    public func refreshToken(completion: Completion<Error?>? = nil) {
         guard let auth = token else {
             completion?(QuestAuthError.authInfoMissing)
             return
@@ -151,7 +146,7 @@ public class QuestAuth: NSObject, URLRequestCodable {
                 self.signOut()
                 completion?(error)
             case .success(let _authInfo):
-                self.tokenManager.token = _authInfo
+                self.token = _authInfo
                 completion?(nil)
             }
         }
@@ -160,13 +155,6 @@ public class QuestAuth: NSObject, URLRequestCodable {
         if let req = authorizedTemplateRequest(baseURL: endpoint) {
             autoAuth(req, completion: _completion)
         }
-    }
-    
-    var authURLString: String {
-        let redirectURI = "redirect_uri=\(redirectURL)"
-        let responseType = "response_type=token"
-        let clientID = "client_id=\(clientId)"
-        return baseURL + "authorize?\(clientID)&\(responseType)&\(redirectURI)"
     }
     
     func parseAuthResponse(from url: URL) -> AuthResponse? {
@@ -178,11 +166,21 @@ public class QuestAuth: NSObject, URLRequestCodable {
                 return dict
             }
             
-            guard let a = d["access_token"], let r = d["refresh_token"], let s = d["api_server"], let sURL = URL(string: s), let exp = d["expires_in"], let expInt = Int(exp), let type = d["token_type"] else {
-                return nil
-            }
-            
-            return AuthResponse(access_token: a, refresh_token: r, api_server: sURL, expires_in: expInt, token_type: type)
+            guard
+                let accToken = d["access_token"],
+                let refToken = d["refresh_token"],
+                let apiURL = URL(string: d["api_server"] ?? ""),
+                let exp = d["expires_in"],
+                let type = d["token_type"]
+            else { return nil }
+
+            return AuthResponse(
+                access_token: accToken,
+                refresh_token: refToken,
+                api_server: apiURL,
+                token_type: type,
+                expiryDate: Date().addingTimeInterval(Double(exp) ?? 0)
+            )
         }
         return nil
     }

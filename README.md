@@ -12,21 +12,28 @@ Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAu
 
 
 The QuestAPI is made up of three main pieces:
-1. KeychainStore
+1. TokenStore
 2. QuestAuth
 3. QuestAPI
 
 
-## KeychainStore
-The KeychainStore is a [Locksmith](https://github.com/matthewpalmer/Locksmith) abstraction responsible for encrypting and decrypting your API access tokens behind the scenes so you don't have to worry about it.
+## TokenStore
+The TokenStorable protocol is for you to conform to so that you can choose how to securly store the api token.
 ```
-let keychain = AuthKeychainStore(service: ..., account: ..., data: [:])
+public protocol TokenStorable {
+    func getToken() -> Data
+    func setToken(_ token: Data)
+}
+
+class TokenStore: TokenStorable {
+    // get/set
+}
 ```
 
 ## QuestAuth
-The `QuestAuth` class requires a `KeychainStore` instance for init. `QuestAuth` is responsible for authorizing and deauthorizing requests.
+The `QuestAuth` class requires a class or struct that conforms to  `TokenStorable` .  `QuestAuth` is responsible for authorizing and deauthorizing requests.
 ```
-let auth = try iOSQuestAuth(keychainStore: keychain)
+let auth = iOSQuestAuth(tokenStore: TokenStore(), redirectURL: "https://myserver.com/authorize")
 ```
 ### QuestAuthDelegate
 
@@ -60,7 +67,7 @@ extension LoginViewController: QuestAuthDelegate {
 
 ```
 func setupAPIAuthorization() {
-    if auth.token == nil {
+    if !auth.isAuthorized {
         auth.authorize { error in
             if let e = error {
                 // Handle errors with authorization
@@ -77,10 +84,10 @@ func setupAPIAuthorization() {
 Pass the AppDelegate userActivity method onto the mirrored iOS authorization userActivity handler. This closes the loop when requesting authorization.
 
 ```
+let auth = iOSAuthorizer()
+
 func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-    if let auth = QuestAPI.shared.authorizer as? iOSQuestAuth {
-        auth.application(application, continue: userActivity, restorationHandler: restorationHandler)
-    }
+    auth.application(application, continue: userActivity, restorationHandler: restorationHandler)
     return true
 }
 ```
@@ -127,22 +134,11 @@ extension LoginViewController: QuestAPIDelegate {
 Here is a full example of setting up QuestAPI
 
 ```
-// First setup the keychain store for your app
-let keychain = AuthKeychainStore(service: ..., account: ..., data: [:])
+// Init iOSQuestAuth class with the token store
+let auth = try iOSQuestAuth(tokenStore: TokenStore())
 
-// since the init could throw errors you will have to wrap it in a do catch
-do {
-    // Init iOSQuestAuth class with the keychain store
-    let auth = try iOSQuestAuth(keychainStore: keychain)
-    
-    // Init QuestAPI with the authorizer
-    let api = QuestAPI(authorizor: auth)
-    
-    // Optionally set a singleton to access the API
-    QuestAPI.shared = api
-} catch let err {
-   // handle error
-}
+// Init QuestAPI with the authorizer
+let api = QuestAPI(authorizor: auth)
 ```
 
 

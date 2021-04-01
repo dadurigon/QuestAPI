@@ -5,30 +5,33 @@ import Foundation
 //MARK: - /accounts
 
 public struct AccountResponse: Decodable {
-    public let userId:Int
-    public let accounts:[Account]
+    public let userId: Int
+    public let accounts: [Account]
 }
 
 
 //MARK: - /accounts/ {{ accountNumber }} /positions
 
 public struct PositionResponse: Decodable {
-    public let positions:[Position]
+    public let positions: [Position]
 }
 
 
 //MARK: - /accounts/ {{ accountNumber }} /balances
 
 public struct BalanceResponse: Decodable, Equatable {
-    public let perCurrencyBalances:[Balance]
-    public let combinedBalances:[Balance]
+    public let perCurrencyBalances: [Balance]
+    public let combinedBalances: [Balance]
     
     // sod = start of day
-    public let sodPerCurrencyBalances:[Balance]
-    public let sodCombinedBalances:[Balance]
+    public let sodPerCurrencyBalances: [Balance]
+    public let sodCombinedBalances: [Balance]
     
-    public var gains:(value:Double, percent:Double)? {
-        guard let combinedSod = sodCombinedBalances.first(where: { $0.currency == .CAD }), let combined = combinedBalances.first(where: { $0.currency == .CAD }) else { return nil }
+    public var gains: (value: Double, percent: Double)? {
+        guard
+            let combinedSod = sodCombinedBalances.first(where: { $0.currency == .CAD }),
+            let combined = combinedBalances.first(where: { $0.currency == .CAD })
+        else { return nil }
         
         let change = combined.marketValue - combinedSod.marketValue
         let percent = change / combinedSod.marketValue
@@ -41,10 +44,10 @@ public struct BalanceResponse: Decodable, Equatable {
 //MARK: - /accounts/ {{ accountNumber }} /executions
 
 public struct ExecutionRequest {
-    public let accountNumber:Int
-    public let dateInterval:DateInterval
+    public let accountNumber: Int
+    public let dateInterval: DateInterval
     
-    public init(accountNumber:Int, dateInterval:DateInterval){
+    public init(accountNumber: Int, dateInterval: DateInterval){
         self.accountNumber = accountNumber
         self.dateInterval = dateInterval
     }
@@ -65,12 +68,12 @@ public struct ActivityResponse: Decodable {
 //MARK: - /accounts/ {{ accountNumber }} /orders
 
 public struct OrderRequest {
-    public let accountNumber:String
-    public let dateInterval:DateInterval
-    public let stateFilter:OrderState?
-    public let orderId:Int?
+    public let accountNumber: String
+    public let dateInterval: DateInterval
+    public let stateFilter: OrderState?
+    public let orderId: Int?
     
-    public init(accountNumber:String, dateInterval:DateInterval, stateFilter:OrderState? = nil, orderId:Int? = nil) {
+    public init(accountNumber: String, dateInterval: DateInterval, stateFilter: OrderState? = nil, orderId: Int? = nil) {
         self.accountNumber = accountNumber
         self.dateInterval = dateInterval
         self.stateFilter = stateFilter
@@ -86,18 +89,18 @@ public struct OrderResponse: Decodable {
 //MARK: - /accounts/ {{ accountNumber }} /orders
 
 public struct PostOrderRequest: Codable {
-    public var accountNumber:String
-    public var symbolId:Int
-    public var qunantity:Int
-    public var iceburgQuantity:Int
-    public var limitPrice:Double
-    public var isAllOrNone:Bool
-    public var isAnominous:Bool
-    public var orderType:OrderType
-    public var timeInForce:OrderTimeInForce
-    public var action:OrderAction
-    public var primaryRoute:String
-    public var secondaryRoute:String
+    public var accountNumber: String
+    public var symbolId: Int
+    public var qunantity: Int
+    public var iceburgQuantity: Int
+    public var limitPrice: Double
+    public var isAllOrNone: Bool
+    public var isAnominous: Bool
+    public var orderType: OrderType
+    public var timeInForce: OrderTimeInForce
+    public var action: OrderAction
+    public var primaryRoute: String
+    public var secondaryRoute: String
     
     public init() {
         self.accountNumber = ""
@@ -116,15 +119,15 @@ public struct PostOrderRequest: Codable {
 }
 
 public struct OrderImpactRequest: Codable {
-    public var symbolId:Int
-    public var quantity:Int
-    public var orderType:OrderType
-    public var timeInForce:OrderTimeInForce
-    public var action:OrderAction
-    public var primaryRoute:String
-    public var secondaryRoute:String
+    public var symbolId: Int
+    public var quantity: Int
+    public var orderType: OrderType
+    public var timeInForce: OrderTimeInForce
+    public var action: OrderAction
+    public var primaryRoute: String
+    public var secondaryRoute: String
     
-    public init(symbolId:Int, quantity:Int, orderType:OrderType, timeInForce:OrderTimeInForce, action:OrderAction, primaryRoute:String, secondaryRoute:String) {
+    public init(symbolId: Int, quantity: Int, orderType: OrderType, timeInForce: OrderTimeInForce, action: OrderAction, primaryRoute: String, secondaryRoute: String) {
         self.symbolId = symbolId
         self.quantity = quantity
         self.orderType = orderType
@@ -139,31 +142,31 @@ public struct OrderImpactRequest: Codable {
 //MARK: - /symbols/search
 
 public struct SearchRequest {
-    public var prefix:String
-    public var offset:Int
+    public var prefix: String
+    public var offset: Int
     
-    public init(prefix:String, offset:Int) {
+    public init(prefix: String, offset: Int) {
         self.prefix = prefix
         self.offset = offset
     }
 }
 
 public struct SearchResponse: Decodable {
-    public let symbols:[EquitySymbol]
+    public let symbols: [EquitySymbol]
 }
 
 
 //MARK: - /symbols/ {{ symbolID }}
 
 public struct SymbolResponse: Decodable {
-    public let symbols:[Symbol]
+    public let symbols: [Symbol]
 }
 
 
 //MARK: - /markets
 
 public struct MarketResponse: Decodable {
-    public let markets:[Market]
+    public let markets: [Market]
 }
 
 
@@ -177,11 +180,11 @@ public struct QuoteResponse: Decodable {
 //MARK: - /markets/candles/ {{ symbolID }}
 
 public struct CandleRequest {
-    public let symbolID:Int
-    public let dateInterval:DateInterval
-    public let interval:HistoricalDataGranularity
+    public let symbolID: Int
+    public let dateInterval: DateInterval
+    public let interval: HistoricalDataGranularity
     
-    public init(symbolID:Int, dateInterval:DateInterval, interval:HistoricalDataGranularity) {
+    public init(symbolID: Int, dateInterval: DateInterval, interval: HistoricalDataGranularity) {
         self.symbolID = symbolID
         self.dateInterval = dateInterval
         self.interval = interval
@@ -189,7 +192,7 @@ public struct CandleRequest {
 }
 
 public struct CandleResponse: Decodable {
-    public let candles:[Candle]
+    public let candles: [Candle]
 }
 
 
@@ -203,31 +206,31 @@ public struct OptionResponse: Decodable {
 //MARK: - /markets/quotes/options
 
 public struct OptionRequest {
-    public let filters:[OptionIdFilter]
-    public let optionIds:[Int]
+    public let filters: [OptionIdFilter]
+    public let optionIds: [Int]
     
-    public init(filters:[OptionIdFilter], optionIds:[Int]) {
+    public init(filters: [OptionIdFilter], optionIds: [Int]) {
         self.filters = filters
         self.optionIds = optionIds
     }
 }
 
-public struct OptionQuoteResponse:Decodable {
-    public let optionQuotes:[OptionQuote]
+public struct OptionQuoteResponse: Decodable {
+    public let optionQuotes: [OptionQuote]
 }
 
 
 //MARK: - /markets/quotes/strategies
 
 public struct StrategyVariantRequest {
-    public let variants:[StrategyVariant]
+    public let variants: [StrategyVariant]
     
-    public init(variants:[StrategyVariant]) {
+    public init(variants: [StrategyVariant]) {
         self.variants = variants
     }
 }
 
 public struct StrategyQuoteResponse: Decodable {
-    public let stategyQuotes:[StratagyQuote]
+    public let stategyQuotes: [StratagyQuote]
 }
 

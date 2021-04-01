@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.name         = "QuestAPI"
   s.version      = "0.3.20"
   s.summary      = "A Questrade API written in swift."
-  s.swift_version = "4.2"
+  s.swift_version = "5.0"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -51,7 +51,6 @@ Pod::Spec.new do |s|
   #
 
   s.author             = { "Eli Slade" => "elislade@gmail.com" }
-  s.social_media_url   = "https://twitter.com/eli_slade"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -100,7 +99,5 @@ Pod::Spec.new do |s|
   #  If your library depends on compiler flags you can set them in the xcconfig hash
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
-
-  s.ios.dependency 'Locksmith'
 
 end

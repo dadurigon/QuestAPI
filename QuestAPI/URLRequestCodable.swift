@@ -1,23 +1,23 @@
 
 import Foundation
 
-public typealias APIRes<T> = (Res<T>) -> Void
+public typealias APIRes<T: Decodable> = (Res<T>) -> Void
 
-public enum Res<T> {
+public enum Res<T: Decodable> {
     case success(T)
     case failure(Error)
 }
 
 public protocol URLRequestCodableDelegate {
-    func willMake(request:URLRequest)
-    func didMake(request:URLRequest)
+    func willMake(request: URLRequest)
+    func didMake(request: URLRequest)
 }
 
 public protocol URLRequestCodable {
     var encoder: JSONEncoder {get set}
     var decoder: JSONDecoder {get set}
     var session: URLSession {get set}
-    var apiDelegate: URLRequestCodableDelegate? {get set}
+    var requestDelegate: URLRequestCodableDelegate? {get set}
 }
 
 public enum URLRequestCodableError: Error {
@@ -26,16 +26,17 @@ public enum URLRequestCodableError: Error {
 
 extension URLRequestCodable {
     
-    public func make<T: Decodable>(_ request: URLRequest, completion:@escaping APIRes<T>, shouldWriteResponseToFile:Bool = false) {
+    public func make<T>(_ request: URLRequest, completion: @escaping APIRes<T>) {
         
-        self.apiDelegate?.willMake(request: request)
+        requestDelegate?.willMake(request: request)
 
-        let task = session.dataTask(with: request) {  data, res, err in
+        session.dataTask(with: request) {  data, res, err in
             
-            self.apiDelegate?.didMake(request: request)
+            self.requestDelegate?.didMake(request: request)
             
             if let e = err {
                 completion(.failure(e))
+                return
             }
             
             if let res = res {
@@ -49,17 +50,6 @@ extension URLRequestCodable {
                     } else {
                         // everthing went fine
                         if let d = data {
-                            if shouldWriteResponseToFile {
-                                do {
-                                    // let json = try JSONSerialization.jsonObject(with: d)
-                                    guard let documentDirectoryUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-                                    let fileUrl = documentDirectoryUrl.appendingPathComponent("\(T.self).json")
-                                    try d.write(to: fileUrl)
-                                } catch {
-                                    completion(.failure(error))
-                                }
-                            }
-                            
                             if T.self == Data.self {
                                 completion(.success(d as! T))
                             } else {
@@ -77,7 +67,6 @@ extension URLRequestCodable {
                 }
             }
             
-        }
-        task.resume()
+        }.resume()
     }
 }

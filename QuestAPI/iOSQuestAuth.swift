@@ -2,7 +2,7 @@
 import UIKit
 import SafariServices
 
-public struct APIDelegate: URLRequestCodableDelegate {
+public struct RequestDelegate: URLRequestCodableDelegate {
     public func willMake(request: URLRequest) {
         DispatchQueue.main.async {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -16,13 +16,14 @@ public struct APIDelegate: URLRequestCodableDelegate {
     }
 }
 
-public protocol QuestAuthCtrlCostomizable {
+public protocol QuestAuthCtrlCustomizable {
     func willPrepareAuthCtrl(for customization: inout AuthViewControllerCustomization)
 }
 
 public struct AuthViewControllerCustomization {
-    public var preferredControlTintColor:UIColor?
-    public var preferredBarTintColor:UIColor?
+    public var preferredControlTintColor: UIColor?
+    public var preferredBarTintColor: UIColor?
+    public var modalPresentationStyle: UIModalPresentationStyle?
 }
 
 public enum iOSQuestAuthError: Error {
@@ -34,14 +35,14 @@ public class iOSQuestAuth: QuestAuth {
     private var authCompletion: Completion<Error?>?
     private var presentedAuthCtrl: UIViewController?
     
-    public var authCtrlDelegate:QuestAuthCtrlCostomizable?
+    public var authCtrlDelegate: QuestAuthCtrlCustomizable?
     
-    override public init(keychainStore: AuthKeychainStore) throws {
-        try super.init(keychainStore: keychainStore)
-        apiDelegate = APIDelegate()
+    override public init(tokenStore: TokenStorable, clientID: String, redirectURL: String) {
+        super.init(tokenStore: tokenStore, clientID: clientID, redirectURL: redirectURL)
+        requestDelegate = RequestDelegate()
     }
     
-    public func authorize(completion:Completion<Error?>? = nil) {
+    public func authorize(completion: Completion<Error?>? = nil) {
         guard let url = URL(string: authURLString) else {
             completion?(QuestAuthError.urlParsingIssue)
             return
@@ -54,7 +55,7 @@ public class iOSQuestAuth: QuestAuth {
         authCtrlDelegate?.willPrepareAuthCtrl(for: &customization)
         safari.preferredBarTintColor = customization.preferredBarTintColor
         safari.preferredControlTintColor = customization.preferredControlTintColor
-        safari.modalPresentationStyle = .formSheet
+        safari.modalPresentationStyle = customization.modalPresentationStyle ?? .formSheet
         safari.delegate = self
         
         DispatchQueue.main.async {

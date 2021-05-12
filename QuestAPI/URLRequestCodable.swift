@@ -1,12 +1,7 @@
 
 import Foundation
 
-public typealias APIRes<T: Decodable> = (Res<T>) -> Void
-
-public enum Res<T: Decodable> {
-    case success(T)
-    case failure(Error)
-}
+public typealias APIRes<T: Decodable> = (Result<T, Error>) -> Void
 
 public protocol URLRequestCodableDelegate {
     func willMake(request: URLRequest)

@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "QuestAPI"
-  s.version      = "0.3.20"
+  s.version      = "0.5.0"
   s.summary      = "A Questrade API written in swift."
   s.swift_version = "5.0"
 

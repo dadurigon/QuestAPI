@@ -33,8 +33,8 @@ public struct BalanceResponse: Decodable, Equatable {
             let combined = combinedBalances.first(where: { $0.currency == .CAD })
         else { return nil }
         
-        let change = combined.marketValue - combinedSod.marketValue
-        let percent = change / combinedSod.marketValue
+        let change = combined.totalEquity - combinedSod.totalEquity
+        let percent = change / combinedSod.totalEquity
         
         return(change, percent)
     }

@@ -1,7 +1,7 @@
 
 import Foundation
 
-public typealias APIRes<T: Decodable> = (Result<T, Error>) -> Void
+public typealias APIRes<T: Decodable> = (Result<T, Swift.Error>) -> Void
 
 public protocol URLRequestCodableDelegate {
     func willMake(request: URLRequest)

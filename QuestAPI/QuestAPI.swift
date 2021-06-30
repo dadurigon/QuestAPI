@@ -6,7 +6,7 @@ public protocol QuestAPIDelegate {
 }
 
 public enum QuestAPIError: Error {
-    case missingMockDataBundle, missingAuthorizedRequest
+    case missingFakeDataBundle, missingAuthorizedRequest
 }
 
 public class QuestAPI: NSObject {
@@ -22,19 +22,19 @@ public class QuestAPI: NSObject {
     
     public var delegate: QuestAPIDelegate?
     
-    // if enabled API requests will responed with mock data when available
-    public var shouldUseMockResponse = false
+    // if enabled API requests will responed with fake data when available
+    public var shouldUseFakeResponse = false
     
     public init(authorizor:QuestAuth) {
         self.authorizer = authorizor
     }
     
-    private func mockResponse<T>(_ completion: @escaping APIRes<T>) {
+    private func fakeResponse<T>(_ completion: @escaping APIRes<T>) {
         guard
             let bundleUrl = Bundle(for: type(of: self)).resourceURL?.appendingPathComponent("QuestAPIMockData.bundle"),
             let bundle = Bundle(url: bundleUrl)
         else {
-            completion(.failure(QuestAPIError.missingMockDataBundle))
+            completion(.failure(QuestAPIError.missingFakeDataBundle))
             return
         }
         
@@ -77,8 +77,8 @@ public class QuestAPI: NSObject {
     typealias MethodBody = (method: String, body: Data?)
     
     func request<T>(_ endpoint: String, methodBody: MethodBody? = nil, completion: @escaping APIRes<T>) {
-        if shouldUseMockResponse {
-            mockResponse(completion)
+        if shouldUseFakeResponse {
+            fakeResponse(completion)
             return
         }
         

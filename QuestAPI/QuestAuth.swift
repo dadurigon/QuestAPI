@@ -13,24 +13,26 @@ public struct AuthResponse: Codable {
 
 public protocol QuestAuthDelegate {
     func didSignOut(_ questAuth: QuestAuth)
-}
-
-public enum QuestAuthError: Error {
-    case authInfoMissing, authAttemptsRanOut, urlParsingIssue, missingClientID, missingRedirectURL
+    func didAuthorize(_ questAuth: QuestAuth)
+    func didFailToAuthorize(_ questAuth: QuestAuth, with error: QuestAuth.Error)
 }
 
 public class QuestAuth: NSObject, URLRequestCodable {
+    
+    public enum Error: Swift.Error {
+        case authInfoMissing, authAttemptsRanOut, urlParsingIssue, missingClientID, missingRedirectURL
+    }
     
     let baseURL = "https://login.questrade.com/oauth2/"
     
     let clientId: String
     let redirectURL: String
     
-    private let _tokenManager: TokenManager<AuthResponse>
+    private let _tokenStorage: StorageCoder<AuthResponse>
     
-    var token: AuthResponse? {
-        get { _tokenManager.token }
-        set { _tokenManager.token = newValue }
+    var auth: AuthResponse? {
+        get { _tokenStorage.value }
+        set { _tokenStorage.value = newValue }
     }
     
     var authURLString: String {
@@ -47,16 +49,14 @@ public class QuestAuth: NSObject, URLRequestCodable {
     public var session = URLSession.shared
     public var delegate: QuestAuthDelegate?
     public var isAuthorized: Bool {
-        if let t = token {
+        if let t = auth {
             return t.expiryDate > Date()
         }
         
         return false
     }
     
-    
-    
-    public init(tokenStore: TokenStorable, clientID: String, redirectURL: String) {
+    public init(tokenStore: Storable, clientID: String, redirectURL: String) {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
@@ -69,15 +69,17 @@ public class QuestAuth: NSObject, URLRequestCodable {
         
         self.clientId = clientID
         self.redirectURL = redirectURL
-        self._tokenManager = TokenManager<AuthResponse>(storage: tokenStore)
+        self._tokenStorage = StorageCoder<AuthResponse>(storage: tokenStore)
     }
     
     private func signOut() {
-        token = nil
+        auth = nil
         delegate?.didSignOut(self)
     }
     
     public func revokeAccess(completion: (() -> Void)? = nil) {
+        print("revoke access")
+        
         let _completion: APIRes<Data> = { _ in
             self.signOut()
             completion?()
@@ -90,10 +92,10 @@ public class QuestAuth: NSObject, URLRequestCodable {
     }
     
     func authorizedTemplateRequest(baseURL: String? = nil) -> URLRequest? {
-        guard let token = token else { return nil }
-        let u: URL = baseURL != nil ? URL(string: baseURL!)! : token.api_server
+        guard let auth = auth else { return nil }
+        let u: URL = baseURL != nil ? URL(string: baseURL!)! : auth.api_server
         var r = URLRequest(url: u)
-        r.addValue("Bearer \(token.access_token)", forHTTPHeaderField: "Authorization")
+        r.addValue("\(auth.token_type) \(auth.access_token)", forHTTPHeaderField: "Authorization")
         return r
     }
     
@@ -104,7 +106,7 @@ public class QuestAuth: NSObject, URLRequestCodable {
         var executed = false
         
         if attempts == 0 {
-            completion(.failure(QuestAuthError.authAttemptsRanOut))
+            completion(.failure(Error.authAttemptsRanOut))
         }
     
         let _completion: APIRes<T> = { res in
@@ -134,9 +136,9 @@ public class QuestAuth: NSObject, URLRequestCodable {
         make(request, completion: _completion)
     }
     
-    public func refreshToken(completion: Completion<Error?>? = nil) {
-        guard let auth = token else {
-            completion?(QuestAuthError.authInfoMissing)
+    public func refreshToken(completion: Completion<Swift.Error?>? = nil) {
+        guard let auth = auth else {
+            completion?(Error.authInfoMissing)
             return
         }
         
@@ -146,7 +148,7 @@ public class QuestAuth: NSObject, URLRequestCodable {
                 self.signOut()
                 completion?(error)
             case .success(let _authInfo):
-                self.token = _authInfo
+                self.auth = _authInfo
                 completion?(nil)
             }
         }

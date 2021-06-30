@@ -2,25 +2,25 @@
 import Foundation
 
 
-public enum Currency: String, Codable {
+public enum Currency: String, Codable, CaseIterable {
     case USD, CAD
 }
 
-public enum ListingExchange: String, Codable {
+public enum ListingExchange: String, Codable, CaseIterable {
     case TSX, TSXV, CNSX, MX, NASDAQ, NYSE, AMEX, ARCA, OPRA, PinkSheets, OTCBB, NYSEAM, PINX, TSXI, DJI, NYSEGIF, NASDAQI, BATS, RUSSELL, NEO, OPRAI, ISEI, PHLXI, SP = "S&P", Empty = ""
 }
 
-public enum AccountType: String, Codable {
+public enum AccountType: String, Codable, CaseIterable {
     case Cash, Margin, TFSA, RRSP, SRRSP, LRRSP, LIRA, LIF, RIF, SRIF, LRIF,
     RRIF, PRIF, RESP, FRESP
 }
 
-public enum ClientAccountType: String, Codable {
+public enum ClientAccountType: String, Codable, CaseIterable {
     case Individual, Joint, InformalTrust, Corporation, InvestmentClub, FormalTrust, Partnership,
     SoleProprietorship, FamilyJointandInformalTrust, Institution
 }
 
-public enum AccountStatus: String, Codable {
+public enum AccountStatus: String, Codable, CaseIterable {
     case Active, SuspendedClosed, SuspendedViewOnly, Liqudated, Closed
 }
 
@@ -32,7 +32,7 @@ public enum OptionType: String, Codable {
     case Call, Put
 }
 
-public enum OptionDuration: String, Codable, CustomStringConvertible {
+public enum OptionDuration: String, Codable, CustomStringConvertible, CaseIterable {
     case Weekly, Monthly, Quarterly, LEAP
     
     public var description: String {
@@ -44,7 +44,7 @@ public enum OptionExercise: String, Codable {
     case American, European
 }
 
-public enum Security: String, Codable {
+public enum Security: String, Codable, CaseIterable {
     case Stock, Option, Bond, Right, Gold, MutualFund, Index, Currency
 }
 
@@ -52,7 +52,7 @@ public enum OrderAction: String, Codable {
     case Buy, Sell
 }
 
-public enum OrderSide: String, Codable, CustomStringConvertible {
+public enum OrderSide: String, Codable, CustomStringConvertible, CaseIterable {
     case Buy, Sell, Short, Cov, BTO, STC, STO, BTC
     
     public var description: String {
@@ -82,7 +82,7 @@ public enum OrderState: String, Codable, CaseIterable {
     Replaced, Stopped, Suspended, Expired, Queued, Triggered, Activated, PendingRiskReview
 }
 
-public enum HistoricalDataGranularity: String, Codable {
+public enum HistoricalDataGranularity: String, Codable, CaseIterable {
     case OneMinute, TwoMinutes, ThreeMinutes, FourMinutes, FiveMinutes, TenMinutes, FifteenMinutes, TwentyMinutes,
     HalfHour, OneHour, TwoHours, FourHours,
     OneDay, OneWeek, OneMonth, OneYear
@@ -92,7 +92,7 @@ public enum OrderClass: String, Codable {
     case Primary, Limit, StopLoss
 }
 
-public enum StrategyType: String, Codable {
+public enum StrategyType: String, Codable, CaseIterable {
     case SingleLeg, CoveredCall, MarriedPuts, VerticalCallSpread, VerticalPutSpread,
     CalendarCallSpread, CalendarPutSpread, DiagonalCallSpread, DiagonalPutSpread, Collar,
     Straddle, Strangle, ButterflyCall, ButterflyPut, IronButterfly, CondorCall, Custom

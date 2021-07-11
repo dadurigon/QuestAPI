@@ -41,6 +41,20 @@ public class iOSQuestAuth: QuestAuth {
         }
     }
     
+    public override func authorize(from url: URL) {
+        if let res = parseAuthResponse(from: url) {
+            auth = res
+            print("parse", res)
+            delegate?.didAuthorize(self)
+            DispatchQueue.main.async {
+                self.presentedCtrl?.dismiss(animated: true)
+            }
+        } else {
+            delegate?.didFailToAuthorize(self, with: .urlParsingIssue)
+            presentedCtrl = nil
+        }
+    }
+    
     public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) {
         //if token != nil { return }
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {

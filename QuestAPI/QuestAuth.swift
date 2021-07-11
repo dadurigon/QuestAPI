@@ -159,6 +159,13 @@ public class QuestAuth: NSObject, URLRequestCodable {
         }
     }
     
+    public func authorize(from url: URL) {
+        if let auth = parseAuthResponse(from: url) {
+            self.auth = auth
+            self.delegate?.didAuthorize(self)
+        }
+    }
+    
     func parseAuthResponse(from url: URL) -> AuthResponse? {
         let u = url.absoluteString.replacingOccurrences(of: "#", with: "?")
         if let items = URLComponents(string: u)?.queryItems {

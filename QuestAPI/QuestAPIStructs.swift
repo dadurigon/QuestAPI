@@ -182,12 +182,12 @@ public struct QuoteResponse: Decodable {
 public struct CandleRequest {
     public let symbolID: Int
     public let dateInterval: DateInterval
-    public let interval: HistoricalDataGranularity
+    public let granularity: HistoricalDataGranularity
     
-    public init(symbolID: Int, dateInterval: DateInterval, interval: HistoricalDataGranularity) {
+    public init(symbolID: Int, dateInterval: DateInterval, granularity: HistoricalDataGranularity) {
         self.symbolID = symbolID
         self.dateInterval = dateInterval
-        self.interval = interval
+        self.granularity = granularity
     }
 }
 

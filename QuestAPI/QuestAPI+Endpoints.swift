@@ -97,7 +97,7 @@ extension QuestAPI {
     public func candles(req: CandleRequest , completion: @escaping APIRes<CandleResponse>) {
         var endpoint = version + "/markets/candles/\(req.symbolID)"
         endpoint += queryString([
-            "interval" : req.interval.rawValue,
+            "interval" : req.granularity.rawValue,
             "startTime": dateFormatter.string(from: req.dateInterval.start),
             "endTime"  : dateFormatter.string(from: req.dateInterval.end)
         ])!

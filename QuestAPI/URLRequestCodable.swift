@@ -16,7 +16,7 @@ public protocol URLRequestCodable {
 }
 
 public enum URLRequestCodableError: Error {
-    case noDataResponse
+    case noData, noResponse
 }
 
 extension URLRequestCodable {
@@ -34,34 +34,32 @@ extension URLRequestCodable {
                 return
             }
             
-            if let res = res {
-                let r = res as? HTTPURLResponse
-                if let code = r?.statusCode {
-                    if code != 200 {
-                        // somthing went wrong
-                        let domain = HTTPURLResponse.localizedString(forStatusCode: code)
-                        let error = NSError(domain: domain, code: code, userInfo: r?.allHeaderFields as? [String:Any])
+            guard let data = data else {
+                completion(.failure(URLRequestCodableError.noData))
+                return
+            }
+            
+            guard let res = res as? HTTPURLResponse else {
+                completion(.failure(URLRequestCodableError.noResponse))
+                return
+            }
+
+            if res.statusCode != 200 {
+                let domain = HTTPURLResponse.localizedString(forStatusCode: res.statusCode)
+                let error = NSError(domain: domain, code: res.statusCode, userInfo: res.allHeaderFields as? [String:Any])
+                completion(.failure(error))
+            } else {
+                if T.self == Data.self {
+                    completion(.success(data as! T))
+                } else {
+                    do {
+                        let decoded = try self.decoder.decode(T.self, from: data)
+                        completion(.success(decoded))
+                    } catch {
                         completion(.failure(error))
-                    } else {
-                        // everthing went fine
-                        if let d = data {
-                            if T.self == Data.self {
-                                completion(.success(d as! T))
-                            } else {
-                                do {
-                                    let _d = try self.decoder.decode(T.self, from: d)
-                                    completion(.success(_d))
-                                } catch let error {
-                                    completion(.failure(error))
-                                }
-                            }
-                        } else {
-                            completion(.failure(URLRequestCodableError.noDataResponse))
-                        }
                     }
                 }
             }
-            
         }.resume()
     }
 }

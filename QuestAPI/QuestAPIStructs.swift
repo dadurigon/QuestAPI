@@ -2,6 +2,17 @@
 import Foundation
 
 
+//MARK: - https://login.questrade.com/oauth2/
+
+public struct AuthResponse: Codable {
+    public let access_token: String
+    public let refresh_token: String
+    public let api_server: URL
+    public let token_type: String
+    public let expiryDate: Date
+}
+
+
 //MARK: - /accounts
 
 public struct AccountResponse: Decodable {

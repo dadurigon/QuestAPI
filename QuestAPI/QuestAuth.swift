@@ -3,14 +3,6 @@ import Foundation
 
 public typealias Completion<T> = (T) -> Void
 
-public struct AuthResponse: Codable {
-    let access_token: String
-    let refresh_token: String
-    let api_server: URL
-    let token_type: String
-    let expiryDate: Date
-}
-
 public protocol QuestAuthDelegate {
     func didSignOut(_ questAuth: QuestAuth)
     func didAuthorize(_ questAuth: QuestAuth)
@@ -49,15 +41,11 @@ public class QuestAuth: NSObject, URLRequestCodable {
     public var session = URLSession.shared
     public var delegate: QuestAuthDelegate?
     public var isAuthorized: Bool {
-        if let t = auth {
-            return t.expiryDate > Date()
-        }
-        
-        return false
+        guard let auth = auth else { return false }
+        return auth.expiryDate > Date()
     }
     
     public init(tokenStore: Storable, clientID: String, redirectURL: String) {
-        
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -78,8 +66,6 @@ public class QuestAuth: NSObject, URLRequestCodable {
     }
     
     public func revokeAccess(completion: (() -> Void)? = nil) {
-        print("revoke access")
-        
         let _completion: APIRes<Data> = { _ in
             self.signOut()
             completion?()
@@ -168,29 +154,24 @@ public class QuestAuth: NSObject, URLRequestCodable {
     
     func parseAuthResponse(from url: URL) -> AuthResponse? {
         let u = url.absoluteString.replacingOccurrences(of: "#", with: "?")
-        if let items = URLComponents(string: u)?.queryItems {
-            let d = items.reduce([String: String]()) { (dict, query) -> [String: String] in
-                var dict = dict
-                dict[query.name] = query.value
-                return dict
-            }
-            
-            guard
-                let accToken = d["access_token"],
-                let refToken = d["refresh_token"],
-                let apiURL = URL(string: d["api_server"] ?? ""),
-                let exp = d["expires_in"],
-                let type = d["token_type"]
-            else { return nil }
+        guard let items = URLComponents(string: u)?.queryItems else { return nil }
+  
+        let d = items.reduce(into: [String: String]()) { $0[$1.name] = $1.value }
+        
+        guard
+            let accToken = d["access_token"],
+            let refToken = d["refresh_token"],
+            let apiURL = URL(string: d["api_server"] ?? ""),
+            let exp = d["expires_in"],
+            let type = d["token_type"]
+        else { return nil }
 
-            return AuthResponse(
-                access_token: accToken,
-                refresh_token: refToken,
-                api_server: apiURL,
-                token_type: type,
-                expiryDate: Date().addingTimeInterval(Double(exp) ?? 0)
-            )
-        }
-        return nil
+        return AuthResponse(
+            access_token: accToken,
+            refresh_token: refToken,
+            api_server: apiURL,
+            token_type: type,
+            expiryDate: Date().addingTimeInterval(Double(exp) ?? 0)
+        )
     }
 }

@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		1C7A565E21C18B4800377E82 /* QuestAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C7A565C21C18B4800377E82 /* QuestAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1C7A566C21C18B6600377E82 /* QuestAuthTokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566421C18B6600377E82 /* QuestAuthTokenManager.swift */; };
 		1C7A566D21C18B6600377E82 /* MockResponses in Resources */ = {isa = PBXBuildFile; fileRef = 1C7A566521C18B6600377E82 /* MockResponses */; };
 		1C7A566E21C18B6600377E82 /* QuestAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566621C18B6600377E82 /* QuestAuth.swift */; };
 		1C7A566F21C18B6600377E82 /* QuestAPIStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566721C18B6600377E82 /* QuestAPIStructs.swift */; };
-		1C7A567021C18B6600377E82 /* iOSQuestAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566821C18B6600377E82 /* iOSQuestAuth.swift */; };
+		1C7A567021C18B6600377E82 /* UIKitQuestAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566821C18B6600377E82 /* UIKitQuestAuth.swift */; };
 		1C7A567121C18B6600377E82 /* QuestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566921C18B6600377E82 /* QuestAPI.swift */; };
 		1C7A567221C18B6600377E82 /* QuestDataStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566A21C18B6600377E82 /* QuestDataStructs.swift */; };
 		1C7A567321C18B6600377E82 /* QuestDataEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7A566B21C18B6600377E82 /* QuestDataEnums.swift */; };
+		1C859D03273B2E1900E7444F /* StorageCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C859D02273B2E1900E7444F /* StorageCoder.swift */; };
 		1CCD091E22F9F514009DD179 /* QuestAPI+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCD091D22F9F514009DD179 /* QuestAPI+Endpoints.swift */; };
 		1CD2578321C1A8150014DD22 /* URLRequestCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD2578221C1A8150014DD22 /* URLRequestCodable.swift */; };
 /* End PBXBuildFile section */
@@ -24,14 +24,14 @@
 		1C7A565921C18B4800377E82 /* QuestAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QuestAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C7A565C21C18B4800377E82 /* QuestAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestAPI.h; sourceTree = "<group>"; };
 		1C7A565D21C18B4800377E82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1C7A566421C18B6600377E82 /* QuestAuthTokenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAuthTokenManager.swift; sourceTree = "<group>"; };
 		1C7A566521C18B6600377E82 /* MockResponses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MockResponses; sourceTree = "<group>"; };
 		1C7A566621C18B6600377E82 /* QuestAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAuth.swift; sourceTree = "<group>"; };
 		1C7A566721C18B6600377E82 /* QuestAPIStructs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAPIStructs.swift; sourceTree = "<group>"; };
-		1C7A566821C18B6600377E82 /* iOSQuestAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSQuestAuth.swift; sourceTree = "<group>"; };
+		1C7A566821C18B6600377E82 /* UIKitQuestAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitQuestAuth.swift; sourceTree = "<group>"; };
 		1C7A566921C18B6600377E82 /* QuestAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestAPI.swift; sourceTree = "<group>"; };
 		1C7A566A21C18B6600377E82 /* QuestDataStructs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestDataStructs.swift; sourceTree = "<group>"; };
 		1C7A566B21C18B6600377E82 /* QuestDataEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestDataEnums.swift; sourceTree = "<group>"; };
+		1C859D02273B2E1900E7444F /* StorageCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageCoder.swift; sourceTree = "<group>"; };
 		1CCD091D22F9F514009DD179 /* QuestAPI+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "QuestAPI+Endpoints.swift"; sourceTree = "<group>"; };
 		1CD2578221C1A8150014DD22 /* URLRequestCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestCodable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,15 +67,15 @@
 			isa = PBXGroup;
 			children = (
 				1CD2578221C1A8150014DD22 /* URLRequestCodable.swift */,
-				1C7A566821C18B6600377E82 /* iOSQuestAuth.swift */,
 				1C7A566521C18B6600377E82 /* MockResponses */,
 				1C7A566921C18B6600377E82 /* QuestAPI.swift */,
 				1C7A566721C18B6600377E82 /* QuestAPIStructs.swift */,
 				1CCD091D22F9F514009DD179 /* QuestAPI+Endpoints.swift */,
 				1C7A566621C18B6600377E82 /* QuestAuth.swift */,
-				1C7A566421C18B6600377E82 /* QuestAuthTokenManager.swift */,
+				1C7A566821C18B6600377E82 /* UIKitQuestAuth.swift */,
 				1C7A566B21C18B6600377E82 /* QuestDataEnums.swift */,
 				1C7A566A21C18B6600377E82 /* QuestDataStructs.swift */,
+				1C859D02273B2E1900E7444F /* StorageCoder.swift */,
 				1C7A565C21C18B4800377E82 /* QuestAPI.h */,
 				1C7A565D21C18B4800377E82 /* Info.plist */,
 			);
@@ -164,12 +164,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CD2578321C1A8150014DD22 /* URLRequestCodable.swift in Sources */,
-				1C7A567021C18B6600377E82 /* iOSQuestAuth.swift in Sources */,
+				1C7A567021C18B6600377E82 /* UIKitQuestAuth.swift in Sources */,
 				1C7A566F21C18B6600377E82 /* QuestAPIStructs.swift in Sources */,
 				1C7A567321C18B6600377E82 /* QuestDataEnums.swift in Sources */,
 				1CCD091E22F9F514009DD179 /* QuestAPI+Endpoints.swift in Sources */,
+				1C859D03273B2E1900E7444F /* StorageCoder.swift in Sources */,
 				1C7A566E21C18B6600377E82 /* QuestAuth.swift in Sources */,
-				1C7A566C21C18B6600377E82 /* QuestAuthTokenManager.swift in Sources */,
 				1C7A567121C18B6600377E82 /* QuestAPI.swift in Sources */,
 				1C7A567221C18B6600377E82 /* QuestDataStructs.swift in Sources */,
 			);
@@ -306,7 +306,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = N2V9KYH4KN;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -319,7 +319,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.elislade.QuestAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -335,7 +335,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = N2V9KYH4KN;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -348,7 +348,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.0;
+				MARKETING_VERSION = 0.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.elislade.QuestAPI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

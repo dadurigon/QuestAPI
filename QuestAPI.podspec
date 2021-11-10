@@ -11,11 +11,11 @@ Pod::Spec.new do |s|
   
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.name         = "QuestAPI"
-  s.version      = "0.5.0"
+  s.version      = "0.6.0"
   s.summary      = "A Questrade API written in swift."
   s.swift_version = "5.0"
   s.description  = "Interact with Questrade using native Swift."
-  s.homepage     = "https://elislade.com/"
+  s.homepage     = "https://github.com/elislade/QuestAPI"
 
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

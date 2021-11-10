@@ -8,9 +8,6 @@ Add to your podfile to install from repo
 pod 'QuestAPI', :git => 'https://github.com/elislade/QuestAPI.git'
 ```
 
-Before using `QuestAPI` you need to setup both the QuestAuthRedirect and QuestAuthClientId in your Info.plist from the values that Questrade provides in it's developer portal.
-
-
 The QuestAPI is made up of three main pieces:
 1. TokenStore
 2. QuestAuth
@@ -18,22 +15,23 @@ The QuestAPI is made up of three main pieces:
 
 
 ## TokenStore
-The TokenStorable protocol is for you to conform to so that you can choose how to securly store the api token.
+The Storable protocol is for you to conform to so that you can choose how to securly store the api token.
 ```
-public protocol TokenStorable {
-    func getToken() -> Data
-    func setToken(_ token: Data)
-}
-
-class TokenStore: TokenStorable {
-    // get/set
+class TokenStore: Storable {
+    // func get() -> Data
+    // func set(_ data: Data)
 }
 ```
 
 ## QuestAuth
-The `QuestAuth` class requires a class or struct that conforms to  `TokenStorable` .  `QuestAuth` is responsible for authorizing and deauthorizing requests.
+The `QuestAuth` class requires a class or struct that conforms to `Storable`, clientId, and a redirectURL. Both the clientID and the redirectURL can be found on the Questrade developer portal. The purpose of `QuestAuth` is for authorizing and deauthorizing requests for the `QuestAPI`.
+
 ```
-let auth = iOSQuestAuth(tokenStore: TokenStore(), redirectURL: "https://myserver.com/authorize")
+let auth = UIKitQuestAuth(
+    tokenStore: TokenStore(),
+    clientID: "xxx-xxxx-xxx",
+    redirectURL: "https://myserver.com/authorize"
+)
 ```
 ### QuestAuthDelegate
 
@@ -61,6 +59,37 @@ extension LoginViewController: QuestAuthDelegate {
 }
 ```
 
+## UIKitQuestAuth
+`UIKitQuestAuth` is a subclass of QuestAuth made specifiaclly for authorization with `UIKit`. It includes methods for presenting login UI and parsing redirect url credentials from the `AppDelegate`.
+
+### UIKitQuestAuthDelegate
+
+#### Will Prepare for Visual Customization
+`willPrepare` will be called right before presenting the UI to login the user. You can set three properties on the inout customization: prefferedTintColor, preferredBarTintColor, and modalPresentationStyle. These values will be used on the presented UI.
+
+Here is some example code of how you might handle it:
+
+```
+extension LoginViewController: UIKitQuestAuthDelegate {
+    func willPrepare(_ auth: UIKitQuestAuth, for customization: inout UIKitQuestAuth.VisualCustomization) {
+        customization.preferredControlTintColor = .red
+        customization.preferredBarTintColor = .black
+        customization.modalPresentationStyle = .formSheet
+    }
+}
+```
+
+#### Did Dismiss
+This is called right after the UI for logging in is dismissed.
+
+```
+extension LoginViewController: UIKitQuestAuthDelegate {
+    func didDismiss(_ auth: UIKitQuestAuth) {
+        activityIndicator.stopAnimating()
+    }
+}
+```
+
 ### Initial Authorization
 
 #### 1. Requesting Authorization
@@ -84,7 +113,7 @@ func setupAPIAuthorization() {
 Pass the AppDelegate userActivity method onto the mirrored iOS authorization userActivity handler. This closes the loop when requesting authorization.
 
 ```
-let auth = iOSAuthorizer()
+let auth = UIKitQuestAuth(...)
 
 func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     auth.application(application, continue: userActivity, restorationHandler: restorationHandler)
@@ -93,7 +122,7 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
 ```
 
 ## QuestAPI
-The `QuestAPI`  class requires an authorizer(`QuestAuth`)  on init so that all requests can be authorized.
+The `QuestAPI`  class requires an authorizer(`QuestAuth`) on init so that all requests can be authorized.
 
 ```
 let api = QuestAPI(authorizor: auth)
@@ -134,11 +163,23 @@ extension LoginViewController: QuestAPIDelegate {
 Here is a full example of setting up QuestAPI
 
 ```
-// Init iOSQuestAuth class with the token store
-let auth = try iOSQuestAuth(tokenStore: TokenStore())
+do {
+    // Init iOSQuestAuth class with the token store
+    let auth = try UIKitQuestAuth(
+        tokenStore: TokenStore(),
+        clientID: "aFsd42sf234FGsdf",
+        redirectURL: URL(string: "https://myurl.com/auth-redirect")
+    )
 
-// Init QuestAPI with the authorizer
-let api = QuestAPI(authorizor: auth)
+    // Init QuestAPI with the authorizer
+    let api = QuestAPI(authorizor: auth)
+    
+    api.accounts { res in
+        print(res)
+    }  
+} catch {
+    print(error.localizedDescription)
+}
 ```
 
 

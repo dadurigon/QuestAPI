@@ -14,7 +14,6 @@ class StorageCoder<Value: Codable> {
     public var value: Value? {
         set(newValue) {
             if newValue == nil {
-                print("delete")
                 storage.delete()
             } else {
                 save()
@@ -45,7 +44,6 @@ class StorageCoder<Value: Codable> {
     
     private func save() {
         if let data = try? encoder.encode(value) {
-            print("save")
             storage.set(data)
         }
     }
